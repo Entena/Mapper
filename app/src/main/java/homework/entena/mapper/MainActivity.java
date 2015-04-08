@@ -1,9 +1,14 @@
 package homework.entena.mapper;
 
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.android.gms.maps.SupportMapFragment;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -11,7 +16,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.layout_port);
+        mapFragment mf = new mapFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.mainScrollView, mf, "MAP");
+        fragmentTransaction.commit();
     }
 
 

@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:orientation="vertical" android:layout_height="fill_parent"
+    tools:context="homework.entena.mapper.mapFragment" android:weightSum="1" >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:id="@+id/mapBox"
+        android:layout_height="504dp" android:layout_weight=".75">
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:id="@+id/goToBox"
+        android:layout_height="fill_parent" android:layout_weight=".25"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go to:"
+            android:id="@+id/btnGoTo"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_toRightOf="@+id/btnGoTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/editLat"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_toRightOf="@+id/editLat"
+            android:layout_alignBottom="@+id/editLat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/editLong"
+            android:layout_alignParentEnd="true" />
+    </LinearLayout>
+
+</LinearLayout>
