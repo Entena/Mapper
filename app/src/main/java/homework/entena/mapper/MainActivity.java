@@ -17,8 +17,13 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_port);
+        MarkersFragment model = new MarkersFragment();
+        FragmentTransaction fragmentTransaction;
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(model, "MODEL");
+        fragmentTransaction.commit();
         mapFragment mf = new mapFragment();
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.mainScrollView, mf, "MAP");
         fragmentTransaction.commit();
     }

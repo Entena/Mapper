@@ -2,6 +2,7 @@ package homework.entena.mapper;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -27,6 +28,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -61,12 +64,17 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng arg0) {
-                // TODO Auto-generated method stub
                 Toast.makeText(getActivity(), arg0.latitude+"-"+arg0.longitude, Toast.LENGTH_SHORT).show();
                 Log.d("arg0", arg0.latitude + "-" + arg0.longitude);
             }
         });
-
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener(){
+            public void onMapLongClick(LatLng point){
+                MarkerOptions mark = new MarkerOptions().position(point)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                mMap.addMarker(mark);
+            }
+        });
         editLat = (EditText) view.findViewById(R.id.editLat);
         editLong = (EditText) view.findViewById(R.id.editLong);
         Button goTobtn = (Button) view.findViewById(R.id.btnGoTo);
@@ -101,6 +109,7 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
