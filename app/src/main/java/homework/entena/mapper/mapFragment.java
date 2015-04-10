@@ -39,8 +39,7 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private MapView mapView;
     private EditText editLat, editLong;
-
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
+    private MarkersFragment model;
 
     public mapFragment() {
         // Required empty public constructor
@@ -60,18 +59,19 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
         mMap = mapView.getMap();
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         MapsInitializer.initialize(this.getActivity());
-
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng arg0) {
                 Toast.makeText(getActivity(), arg0.latitude+"-"+arg0.longitude, Toast.LENGTH_SHORT).show();
-                Log.d("arg0", arg0.latitude + "-" + arg0.longitude);
+                Log.d("Point:s", arg0.latitude + "-" + arg0.longitude);
             }
         });
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener(){
             public void onMapLongClick(LatLng point){
                 MarkerOptions mark = new MarkerOptions().position(point)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                MarkerItem mk = new MarkerItem(point.latitude, point.longitude);
+                model.addMarker(mk);
                 mMap.addMarker(mark);
             }
         });
@@ -84,7 +84,18 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
                 goTo(v);
             }
         });
+        model = (MarkersFragment) getFragmentManager().findFragmentByTag("MODEL");
+        populateMarkers();
         return view;
+    }
+
+    public void populateMarkers(){
+        for(int i=0; i < model.getMarkers().size(); i++){
+            LatLng point = new LatLng(model.getMarker(i).latitude, model.getMarker(i).longitude);
+            MarkerOptions mark = new MarkerOptions().position(point)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            mMap.addMarker(mark);
+        }
     }
 
     public void goTo(View view) {
@@ -92,8 +103,8 @@ public class mapFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(getActivity(), "ERROR YOU MUST PROVIDE COORDINATES!", Toast.LENGTH_SHORT).show();
             return;
         }
-        float latit = Float.parseFloat(editLat.getText().toString());
-        float longit = Float.parseFloat(editLong.getText().toString());
+        double latit = Double.parseDouble(editLat.getText().toString());
+        double longit = Double.parseDouble(editLong.getText().toString());
         if(latit > 90.0 || latit < -90.0){
             Toast.makeText(getActivity(), "ERROR: Latitude has a max of 90 and a min of -90", Toast.LENGTH_SHORT).show();
             return;

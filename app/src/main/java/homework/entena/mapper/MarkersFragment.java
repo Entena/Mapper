@@ -27,6 +27,13 @@ public class MarkersFragment extends Fragment {
         markers.remove(item);
     }
 
+    public Vector<MarkerItem> getMarkers(){
+        return markers;
+    }
+
+    public MarkerItem getMarker(int i){
+        return markers.get(i);
+    }
 
     @Override
     public void onAttach(Activity activity) {
