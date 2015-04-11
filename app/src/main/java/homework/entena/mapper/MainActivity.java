@@ -2,6 +2,7 @@ package homework.entena.mapper;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,25 +10,56 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
 
 
 public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_port);
-        MarkersFragment model = new MarkersFragment();
+        super.onCreate(savedInstanceState); mapFragment mf;
         FragmentTransaction fragmentTransaction;
-        fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(model, "MODEL");
-        fragmentTransaction.commit();
-        mapFragment mf = new mapFragment();
-        fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.mainScrollView, mf, "MAP");
-        fragmentTransaction.commit();
+        MarkersFragment model = (MarkersFragment) getFragmentManager().findFragmentByTag("MODEL");
+        if(model == null){
+            model = new MarkersFragment();
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.add(model, "MODEL");
+            fragmentTransaction.commit();
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.layout_port);
+            cleanFragments();
+            mf = new mapFragment();
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.mainScrollView, mf, "MAP");
+            fragmentTransaction.commit();
+        } else
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            setContentView(R.layout.layout_land);
+            MarkerList ml;
+            cleanFragments();
+            ml = new MarkerList();
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.rightScrollView, ml, "LIST");
+            fragmentTransaction.commit();
+            mf = new mapFragment();
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.leftScrollView, mf, "MAP");
+            fragmentTransaction.commit();
+        }
     }
 
+    public void cleanFragments(){
+        mapFragment mf; MarkerList ml;
+        mf = (mapFragment) getFragmentManager().findFragmentByTag("MAP");
+        if(mf != null){
+            getFragmentManager().beginTransaction().remove(mf).commit();
+        }
+        ml = (MarkerList) getFragmentManager().findFragmentByTag("LIST");
+        if(ml != null){
+            getFragmentManager().beginTransaction().remove(ml).commit();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
