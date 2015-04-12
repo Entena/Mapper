@@ -3,6 +3,7 @@ package homework.entena.mapper;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,7 +65,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -81,19 +83,19 @@ public class MainActivity extends ActionBarActivity {
         FragmentTransaction fragmentTransaction;
         switch(id){
             case R.id.mapFrag:
-                mapFragment mf = (mapFragment) getFragmentManager().findFragmentByTag("MAP");
-                if(mf == null){
+                mapFragment mf;// = (mapFragment) getFragmentManager().findFragmentByTag("MAP");
+                //if(mf == null){
                     mf = new mapFragment();
-                }
+                //}
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.mainScrollView, mf, "MAP");
                 fragmentTransaction.commit();
                 break;
             case R.id.listFrag:
-                MarkerList ml = (MarkerList) getFragmentManager().findFragmentByTag("LIST");
-                if(ml == null){
+                MarkerList ml;// = (MarkerList) getFragmentManager().findFragmentByTag("LIST");
+                //if(ml == null){
                     ml = new MarkerList();
-                }
+                //}
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.mainScrollView, ml, "LIST");
                 fragmentTransaction.commit();
